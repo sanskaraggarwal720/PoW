@@ -8,24 +8,59 @@ from fastapi.responses import FileResponse
 # Define the Fastapi app
 app = FastAPI()
 
-@app.get("/")
-def read():
-    return {"Hello":"World"}
 
-
-xgb_model = XGBClassifier(scale_pos_weight=1000,n_estimators = 500, verbosity = 0, learning_rate = 0.1, random_state = 7, early_stopping_rounds = 10)
+xgb_model = XGBClassifier(
+    scale_pos_weight=1000,
+    n_estimators = 500, 
+    verbosity = 0, 
+    learning_rate = 0.1, 
+    random_state = 7, 
+    early_stopping_rounds = 10
+)
 
 # Mapping functions to handle categorical data
-browser_map = {'Safari': 0.0, 'Chrome': 1.0, 'Opera': 2.0, 'Firefox': 3.0, 'Edge': 4.0, 'NOT-FOUND': 5.0}
-method_map = {'GET': 0.0, 'POST': 1.0, 'HEAD': 2.0, 'OPTIONS': 3.0}
-status_code_map = {"200":0.0, "301":1.0, "400":2.0, "403":3.0, "404":4.0, "500":5.0, "502":6.0}
-ddos_map = {'NoDDoS': 0.0, 'DDoS': 1.0}
+# Mapping functtions with number instead of one-hot-enoconding
+browser_map = {
+    'Safari': 0.0, 
+    'Chrome': 1.0, 
+    'Opera': 2.0, 
+    'Firefox': 3.0, 
+    'Edge': 4.0, 
+    'NOT-FOUND': 5.0
+}
+
+method_map = {
+    'GET': 0.0, 
+    'POST': 1.0,
+    'HEAD': 2.0, 
+    'OPTIONS': 3.0
+}
+
+status_code_map = {
+    "200":0.0,
+    "301":1.0,
+    "400":2.0, 
+    "403":3.0, 
+    "404":4.0, 
+    "500":5.0, 
+    "502":6.0
+}
+
+ddos_map = {
+    'NoDDoS': 0.0,
+    'DDoS': 1.0
+}
 
 # paths
 file_path = "../csv_files/ddos_data.csv"
 logger_path = "../csv_files/logger.csv"
 complete_logs_path = "../csv_files/complete_logs.csv"
 blocked_path = "../csv_files/blocked.csv"
+
+
+@app.get("/")
+def read():
+    return {"Hello":"World"}
 
 # Load CSV data and train the model
 @app.get("/start-training") 
@@ -61,6 +96,7 @@ async def run_tree_ensemble():
 
         print(f"Error: {e}")
         return {"Error Occured in Training"}
+
 
 @app.get("/predict")
 async def prediction():
