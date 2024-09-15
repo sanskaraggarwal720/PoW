@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DDoS Data Statistics</title>
+        <style>
+            body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    background-color: #fafafa;
+}
+
+table th,
+table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table th {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>DDoS Data Statistics</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Timestamp</th>
+                        <th>Browser</th>
+                        <th>Request Count</th>
+                        <th>HTTP Method</th>
+                        <th>Status Code</th>
+                        <th>Response Time (ms)</th>
+                        <th>DDoS Happening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically generated -->
+                </tbody>
+            </table>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+  const data = {
+    "10.0.0.1": {
+      Details:
+        '{"Browser":"Firefox","Request Count":"42","Response Time (ms)":"720","DDoS Happening":"NoDDoS","Status Code":"403","HTTP Method":"OPTIONS","Timestamp":"17251488473N"}',
+    },
+    "127.0.0.1": {
+      Details:
+        '{"Status Code":"403","Response Time (ms)":"825","Request Count":"79","DDoS Happening":"NoDDoS","Browser":"Chrome","Timestamp":"17251488473N","HTTP Method":"POST"}',
+    },
+    "172.16.0.1": {
+      Details:
+        '{"HTTP Method":"HEAD","Request Count":"65","Status Code":"301","Response Time (ms)":"510","Browser":"Opera","DDoS Happening":"NoDDoS","Timestamp":"17251488473N"}',
+    },
+    "192.168.0.1": {
+      Details:
+        '{"Response Time (ms)":"393","DDoS Happening":"NoDDoS","Request Count":"47","Browser":"Edge","HTTP Method":"GET","Timestamp":"17251488473N","Status Code":"502"}',
+    },
+    "198.51.100.0": {
+      Details:
+        '{"HTTP Method":"POST","Timestamp":"17251488523N","Request Count":"309","Response Time (ms)":"2240","Browser":"Firefox","DDoS Happening":"DDOS","Status Code":"502"}',
+    },
+    "203.0.113.0": {
+      Details:
+        '{"Timestamp":"17251488523N","HTTP Method":"GET","Request Count":"67","Browser":"NOT-FOUND","Status Code":"404","Response Time (ms)":"713","DDoS Happening":"NoDDoS"}',
+    },
+
+    // Add more IPs here...
+  };
+
+  const tbody = document.querySelector("tbody");
+
+  for (const ip in data) {
+    if (data.hasOwnProperty(ip)) {
+      const details = JSON.parse(data[ip].Details);
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+                <td>${ip}</td>
+                <td>${details.Timestamp}</td>
+                <td>${details.Browser}</td>
+                <td>${details["Request Count"]}</td>
+                <td>${details["HTTP Method"]}</td>
+                <td>${details["Status Code"]}</td>
+                <td>${details["Response Time (ms)"]}</td>
+                <td>${details["DDoS Happening"]}</td>
+            `;
+
+      tbody.appendChild(row);
+    }
+  }
+});
+        </script>
+    </body>
+</html>

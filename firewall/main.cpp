@@ -74,7 +74,7 @@ void extract_browser_name(char *user_agent, char *browser) {
 
 // Function to log the data to a CSV file
 void log_request(char *ip_address, char *browser, long long time_millis) {
-    FILE *file = fopen(CSV_FILE, "r+");
+    FILE *file = fopen(CSV_FILE, "a+");
     if (!file) {
         file = fopen(CSV_FILE, "w");
         fprintf(file, "IP Address,Browser,Request Count,Time (ms)\n");
@@ -246,7 +246,7 @@ int main() {
             continue;
         }
 
-        read(new_socket, buffer, BUFFER_SIZE);
+        // read(new_socket, buffer, BUFFER_SIZE);
         printf("C analyzer received: %s\n", buffer);
 
         // Initialize RecentCounter for new IPs
